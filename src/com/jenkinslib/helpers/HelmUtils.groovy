@@ -36,7 +36,6 @@ String image(GlobalVars p) {
 }
 
 String appEnv(GlobalVars p) {
-    def envutils = new EnvUtils()
     envutils.pullConfigProperties(p)
     
     def allEnv = readProperties file: 'envConfigProperties'
