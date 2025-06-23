@@ -3,7 +3,6 @@
 package com.jenkinslib.helpers
 
 import com.jenkinslib.GlobalVars
-import com.jenkinslib.helpers.FlutterUtils
 
 
 def printTagName(GlobalVars p) {
