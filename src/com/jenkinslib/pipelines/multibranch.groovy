@@ -23,9 +23,9 @@ def runStages(GlobalVars p) {
             repoutils.repoCheckout(p)
         }
 
-        stage('Notify to Discord') {
-            discordutils.notifyStarted(p)
-        }
+        // stage('Notify to Discord') {
+        //     discordutils.notifyStarted(p)
+        // }
 
         if (p.pullSecret == "true") {
             stage('Pull Secrets') {
@@ -42,9 +42,9 @@ def runStages(GlobalVars p) {
             helmutils.installChartMultibranch(p)
         }
         
-        stage('Done') {
-            discordutils.notifySuccess(p)
-        }
+        // stage('Done') {
+        //     discordutils.notifySuccess(p)
+        // }
 
         stage('Cleanup Workspace') {
             cleanWs()
