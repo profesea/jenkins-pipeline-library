@@ -59,7 +59,7 @@ def buildChart(GlobalVars p) {
     String chartDir = "./helm-chart/${p.chartName}"
     String chartVersion = readYaml(file: "${chartDir}/Chart.yaml").version
     String chartPackageFilename = "${p.chartName}-${chartVersion}.tgz"
-    String helmBucketName = "asia-southeast2-docker.pkg.dev/profesea-463213/helm-chart-repo"
+    String helmBucketName = "oci://asia-southeast2-docker.pkg.dev/profesea-463213/helm-chart-repo"
 
 
     sh "helm lint ${chartDir}"
@@ -80,7 +80,7 @@ def installChartMultibranch(GlobalVars p) {
     def dockerutils = new DockerUtils()
     pullConfigProperties(p)
 
-    String helmBucketName = "asia-southeast2-docker.pkg.dev/profesea-463213/helm-chart-repo"
+    String helmBucketName = "oci://asia-southeast2-docker.pkg.dev/profesea-463213/helm-chart-repo"
 
     String appChartName = "${helmBucketName}/${p.chartName}"
     String serviceName = "${p.serviceName}-${p.buildEnv}"
@@ -106,12 +106,14 @@ def installChartMultibranch(GlobalVars p) {
 
     String setCommand = sets ? "--set " + sets.join(",") : ""
     String versionCommand = p.chartVersion ? "--version ${p.chartVersion}" : ""
-
-    docker.image("asia-southeast2-docker.pkg.dev/profesea-463213/profesea-deployer/${p.projectName}-${p.buildEnv}:latest")
-        .inside("-v $HOME/cluster-config/${p.projectName}-${p.buildEnv}/config/:/config -u root") { 
-            sh "gcloud auth application-default print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-southeast2-docker.pkg.dev"
-            sh "helm upgrade --install --namespace ${p.namespaceName} --version ${p.chartVersion} ${setCommand} ${serviceName} ${appChartName}"    
-            sh "kubectl rollout status deployment/${p.serviceName}-${p.buildEnv}-release-deployment -n ${p.namespaceName}"    
-        }
+    
+    sh "helm upgrade --install --namespace ${p.namespaceName} --version ${p.chartVersion} ${setCommand} ${serviceName} ${appChartName}"
+    
+    // docker.image("oci://asia-southeast2-docker.pkg.dev/profesea-463213/profesea-deployer/${p.projectName}-${p.buildEnv}:latest")
+    //     .inside("-v $HOME/cluster-config/${p.projectName}-${p.buildEnv}/config/:/config -u root") {
+    //         sh "gcloud auth application-default print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-southeast2-docker.pkg.dev"
+    //         sh "helm upgrade --install --namespace ${p.namespaceName} --version ${p.chartVersion} ${setCommand} ${serviceName} ${appChartName}"    
+    //         sh "kubectl rollout status deployment/${p.serviceName}-${p.buildEnv}-release-deployment -n ${p.namespaceName}"    
+    //     }
 
 }

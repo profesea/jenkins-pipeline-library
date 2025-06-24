@@ -21,7 +21,6 @@ def runStages(GlobalVars p) {
     def deploymentPipeline = {
         stage('Checkout') {
             repoutils.repoCheckout(p)
-            repoutils.repoIngressCheckout(p)
         }
 
         stage('Notify to Discord') {
