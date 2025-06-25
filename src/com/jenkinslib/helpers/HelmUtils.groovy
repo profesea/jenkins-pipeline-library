@@ -108,6 +108,7 @@ def installChartMultibranch(GlobalVars p) {
     String versionCommand = p.chartVersion ? "--version ${p.chartVersion}" : ""
     
     sh "helm upgrade --install --namespace ${p.namespaceName} --version ${p.chartVersion} ${setCommand} ${serviceName} ${appChartName}"
+    sh "kubectl rollout status deployment/${p.serviceName}-${p.buildEnv}-release-deployment -n ${p.namespaceName}"
     
     // docker.image("oci://asia-southeast2-docker.pkg.dev/profesea-463213/profesea-deployer/${p.projectName}-${p.buildEnv}:latest")
     //     .inside("-v $HOME/cluster-config/${p.projectName}-${p.buildEnv}/config/:/config -u root") {
