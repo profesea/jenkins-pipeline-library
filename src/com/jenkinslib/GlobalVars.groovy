@@ -28,7 +28,7 @@ class GlobalVars {
         this.buildEnv = env.BUILD_ENV ? env.BUILD_ENV : "staging"
         this.version = "v" + ((long)(new Date().getTime() / 1000)).toString()
         this.chartName = env.CHART_NAME ? env.CHART_NAME : "default-chart"
-        this.chartVersion = env.CHART_VERSION ? env.CHART_VERSION: "1.0.0-release"
+        this.chartVersion = env.CHART_VERSION ? env.CHART_VERSION: "1.0.0"
         this.namespaceName = env.NAMESPACE ? env.NAMESPACE: "staging"
         this.serviceName = env.SERVICE_NAME ? env.SERVICE_NAME: env.REPOSITORY
         this.projectName = env.PROJECT_NAME ? env.PROJECT_NAME : "profesea"
